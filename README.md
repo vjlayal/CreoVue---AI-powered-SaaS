@@ -50,6 +50,9 @@ Recommended: Vercel (connect repo, set environment variables listed above). Ensu
 
 ## Contributing
 Issues and PRs welcome. For significant changes (payments, streaming uploads), open an issue first to discuss design.
+<<<<<<< HEAD
 
 ## License
 MIT
+=======
+>>>>>>> fix/resolve-conflicts
