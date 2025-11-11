@@ -19,13 +19,10 @@ interface CloudinaryUploadResult{
 }
 
 // Allow larger request bodies for video uploads (default 10MB)
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '200mb'
-        }
-    }
-}
+// Allow large uploads (up to 200MB)
+export const bodyParser = {
+  sizeLimit: '200mb',
+};
 
 export async function POST(req: NextRequest) {
 
