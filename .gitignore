@@ -32,17 +32,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-=======
 
 # local env files
 .env*.local
 .env
->>>>>>> fix/resolve-conflicts
 
 # vercel
 .vercel
@@ -50,8 +43,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-<<<<<<< HEAD
-
-/generated/prisma
-=======
->>>>>>> fix/resolve-conflicts
