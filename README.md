@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CreoVue — AI powered SaaS
 
-## Getting Started
+CreoVue is a Next.js + TypeScript video SaaS prototype that demonstrates authenticated uploads, asset management (Cloudinary), and a simple subscription UI. It is built as a starting point for a scalable media-handling product.
 
-First, run the development server:
+## Key features
+- Auth: Clerk (sign-up / sign-in flows)
+- Media: Upload and manage images & videos (Cloudinary)
+- Persistence: Prisma ORM with PostgreSQL (NeonDB)
+- UI: Next.js (App Router), React, Tailwind CSS + DaisyUI
+- Subscription UI: interactive plan cards (non‑functional placeholder)
+- Dev ergonomics: TypeScript, ESLint, Prisma migrations
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech stack
+- Next.js (App Router)
+- React + TypeScript
+- Prisma (Postgres)
+- Cloudinary (media storage)
+- Clerk (authentication)
+- Tailwind CSS + DaisyUI (styling)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick start (local)
+1. Clone repository
+2. Create `.env` in project root with required variables (example):
+   - DATABASE_URL="postgresql://..."
+   - CLOUDINARY_URL="cloudinary://<key>:<secret>@<cloud_name>"
+   - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...
+   - CLERK_SECRET_KEY=...
+3. Install and generate Prisma client:
+   npm install
+   npx prisma generate
+   npx prisma migrate dev --name init
+4. Run dev server:
+   npm run dev
+5. Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
+Recommended: Vercel (connect repo, set environment variables listed above). Ensure Prisma migrations are applied and Cloudinary + Clerk credentials are added to the deployment environment.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure (high level)
+- app/ — Next.js app routes & pages (App Router)
+- app/api/ — server API routes (uploads, metadata)
+- components/ — reusable UI components (VideoCard, etc.)
+- prisma/ — schema & migrations
+- styles/ — global Tailwind/DaisyUI styles
 
-## Learn More
+## Notes & recommendations
+- Large file uploads: consider direct-to-Cloudinary client uploads or server streaming (busboy/formidable) to avoid Next body-size limits.
+- Persistence of subscription state: currently UI-only; persist to Clerk metadata or DB for production.
+- Keep `.env` out of version control.
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
+Issues and PRs welcome. For significant changes (payments, streaming uploads), open an issue first to discuss design.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+MIT
