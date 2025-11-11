@@ -50,7 +50,7 @@ export default function AppLayout({
       />
       <div className="drawer-content flex flex-col">
         {/* Navbar */}
-        <header className="w-full bg-base-200 shadow-md">
+        <header className="w-full bg-base-200 shadow-md text-white">
           <div className="navbar max-w-full mx-auto px-4 sm:px-6 lg:px-8 bg-gray-800 gap">
             <div className="flex-none lg:hidden">
               <label
