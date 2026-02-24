@@ -1,19 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { auth } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from "@/lib/prisma"
 
-
-const prisma = new PrismaClient();
 
 // Configuration
-    cloudinary.config({ 
-        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, 
-        api_key: process.env.CLOUDINARY_API_KEY, 
-        api_secret:  process.env.CLOUDINARY_API_SECRET// Click 'View API Keys' above to copy your API secret
-    });
+cloudinary.config({
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET// Click 'View API Keys' above to copy your API secret
+});
 
-interface CloudinaryUploadResult{
+interface CloudinaryUploadResult {
     public_id: string;
     [key: string]: any;
 }
@@ -21,7 +19,7 @@ interface CloudinaryUploadResult{
 // Allow larger request bodies for video uploads (default 10MB)
 // Allow large uploads (up to 200MB)
 export const bodyParser = {
-  sizeLimit: '200mb',
+    sizeLimit: '200mb',
 };
 
 export async function POST(req: NextRequest) {
@@ -29,15 +27,15 @@ export async function POST(req: NextRequest) {
     try {
 
         //todo to check user
-    let userId: string | null = null;
+        let userId: string | null = null;
 
-    if(
-        !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
-        !process.env.CLOUDINARY_API_KEY ||
-        !process.env.CLOUDINARY_API_SECRET
-    ){
-        return NextResponse.json({ error: 'Cloudinary not configured properly' }, { status: 500 });
-    }
+        if (
+            !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
+            !process.env.CLOUDINARY_API_KEY ||
+            !process.env.CLOUDINARY_API_SECRET
+        ) {
+            return NextResponse.json({ error: 'Cloudinary not configured properly' }, { status: 500 });
+        }
 
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
@@ -55,7 +53,7 @@ export async function POST(req: NextRequest) {
         const result = await new Promise<CloudinaryUploadResult>(
             (resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    { 
+                    {
                         resource_type: "video",
                         folder: "video-uploads",
                         transformation: [
@@ -63,7 +61,7 @@ export async function POST(req: NextRequest) {
                         ]
                     },
                     (error, result) => {
-                        if(error) reject(error);
+                        if (error) reject(error);
                         else resolve(result as CloudinaryUploadResult);
                     }
                 )
@@ -87,7 +85,5 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         console.log('Upload error:', error);
         return NextResponse.json({ error: 'Video Upload failed' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
     }
 }
