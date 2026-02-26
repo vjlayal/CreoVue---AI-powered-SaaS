@@ -16,18 +16,55 @@ interface CloudinaryUploadResult {
     [key: string]: any;
 }
 
-// Allow larger request bodies for video uploads (default 10MB)
-// Allow large uploads (up to 200MB)
+const MAX_FILE_SIZE = 60 * 1024 * 1024; // 60MB
+const MAX_USER_TOTAL_VIDEOS = 10;
+const MAX_USER_HOURLY_VIDEOS = 3;
+const MAX_GLOBAL_VIDEOS = 100;
+
 export const bodyParser = {
-    sizeLimit: '200mb',
+    sizeLimit: '70mb', // Slightly larger than MAX_FILE_SIZE for overhead
 };
 
 export async function POST(req: NextRequest) {
 
     try {
+        const { userId } = await auth();
 
-        //todo to check user
-        let userId: string | null = null;
+        if (!userId) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        // 1. Global Limit Check (Protect entire project)
+        const totalVideos = await prisma.video.count();
+        if (totalVideos >= MAX_GLOBAL_VIDEOS) {
+            return NextResponse.json({
+                error: 'Global upload limit reached. Please contact support or try again later.'
+            }, { status: 429 });
+        }
+
+        // 2. User Total Limit Check
+        const userTotalVideos = await prisma.video.count({
+            where: { userId }
+        });
+        if (userTotalVideos >= MAX_USER_TOTAL_VIDEOS) {
+            return NextResponse.json({
+                error: `You have reached your limit of ${MAX_USER_TOTAL_VIDEOS} videos.`
+            }, { status: 403 });
+        }
+
+        // 3. User Hourly Rate Limit
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        const hourlyVideos = await prisma.video.count({
+            where: {
+                userId,
+                createdAt: { gte: oneHourAgo }
+            }
+        });
+        if (hourlyVideos >= MAX_USER_HOURLY_VIDEOS) {
+            return NextResponse.json({
+                error: `Rate limit exceeded. You can upload ${MAX_USER_HOURLY_VIDEOS} videos per hour.`
+            }, { status: 429 });
+        }
 
         if (
             !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
@@ -45,6 +82,13 @@ export async function POST(req: NextRequest) {
 
         if (!file) {
             return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+        }
+
+        // 4. Strict File Size Check
+        if (file.size > MAX_FILE_SIZE) {
+            return NextResponse.json({
+                error: `File too large. Maximum size is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`
+            }, { status: 400 });
         }
 
         const bytes = await file.arrayBuffer();
@@ -74,10 +118,10 @@ export async function POST(req: NextRequest) {
                 description,
                 originalSize: originalSize,
                 compressedSize: String(result.bytes),
-                // required Prisma fields from schema
                 publicId: result.public_id,
                 format: result.format,
-                duration: result.duration ? String(result.duration) : null
+                duration: result.duration ? String(result.duration) : null,
+                userId: userId
             }
         })
         return NextResponse.json(video);

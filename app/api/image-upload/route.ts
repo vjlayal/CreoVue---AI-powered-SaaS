@@ -3,41 +3,37 @@ import { v2 as cloudinary } from 'cloudinary';
 import { auth } from '@clerk/nextjs/server';
 
 // Configuration
-    cloudinary.config({ 
-        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, 
-        api_key: process.env.CLOUDINARY_API_KEY, 
-        api_secret:  process.env.CLOUDINARY_API_SECRET// Click 'View API Keys' above to copy your API secret
-    });
+cloudinary.config({
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET// Click 'View API Keys' above to copy your API secret
+});
 
-interface CloudinaryUploadResult{
+interface CloudinaryUploadResult {
     public_id: string;
     [key: string]: any;
 }
 
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
+
 export async function POST(req: NextRequest) {
-    // Resolve userId defensively to satisfy TypeScript and handle Clerk variations
-    let userId: string | null = null;
-    try {
-        if (typeof auth === 'function') {
-            const res = await (auth as any)(req).catch(() => undefined) || await (auth as any)().catch(() => undefined) || await (auth as any)({ req }).catch(() => undefined);
-            userId = res?.userId ?? res?.user?.id ?? null;
-        } else if (auth && typeof auth === 'object') {
-            const authObj: any = auth as any;
-            userId = authObj.userId ?? authObj.user?.id ?? null;
-        }
-    } catch (e) {
-        userId = null;
-    }
+    const { userId } = await auth();
 
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
-    const formData = await req.formData();
+        const formData = await req.formData();
         const file = formData.get("file") as File | null;
         if (!file) {
             return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+        }
+
+        if (file.size > MAX_IMAGE_SIZE) {
+            return NextResponse.json({
+                error: `Image too large. Maximum size is ${MAX_IMAGE_SIZE / (1024 * 1024)}MB.`
+            }, { status: 400 });
         }
 
         const bytes = await file.arrayBuffer();
@@ -46,9 +42,9 @@ export async function POST(req: NextRequest) {
         const result = await new Promise<CloudinaryUploadResult>(
             (resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    { folder: "user_uploads" },
+                    { folder: "image-uploads" },
                     (error, result) => {
-                        if(error) reject(error);
+                        if (error) reject(error);
                         else resolve(result as CloudinaryUploadResult);
                     }
                 )
