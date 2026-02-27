@@ -12,12 +12,18 @@ import {
   UploadIcon,
   ImageIcon,
   CrownIcon,
+  SettingsIcon,
+  RepeatIcon,
+  QrCodeIcon,
 } from "lucide-react";
 
 const sidebarItems = [
   { href: "/home", icon: LayoutDashboardIcon, label: "Home Page" },
   { href: "/social-share", icon: Share2Icon, label: "Social Share" },
   { href: "/video-upload", icon: UploadIcon, label: "Video Upload" },
+  { href: "/media-converter", icon: RepeatIcon, label: "Media Converter" },
+  { href: "/qr-toolkit", icon: QrCodeIcon, label: "QR Toolkit" },
+  { href: "/settings", icon: SettingsIcon, label: "Settings" },
 ];
 
 export default function AppLayout({
@@ -117,11 +123,10 @@ export default function AppLayout({
               <li key={item.href} className="mb-2">
                 <Link
                   href={item.href}
-                  className={`flex items-center space-x-4 px-4 py-2 rounded-lg  ${
-                    pathname === item.href
-                      ? "bg-gray-950 text-white"
-                      : "hover:bg-gray-900 text-gray-300"
-                  }`}
+                  className={`flex items-center space-x-4 px-4 py-2 rounded-lg  ${pathname === item.href
+                    ? "bg-gray-950 text-white"
+                    : "hover:bg-gray-900 text-gray-300"
+                    }`}
                   onClick={() => setSidebarOpen(false)}
                 >
                   <item.icon className="w-6 h-6" />

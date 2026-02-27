@@ -20,3 +20,11 @@ model Video {
   format         String
   userId         String
 }
+
+model UserSetting {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  watermarkPublicId String?
+  watermarkUrl      String?
+  updatedAt         DateTime @updatedAt
+}

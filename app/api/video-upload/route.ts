@@ -94,15 +94,37 @@ export async function POST(req: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
+        // Check if user has a watermark configured
+        const userSettings = await prisma.userSetting.findUnique({
+            where: { userId },
+        });
+
+        // Build transformation array
+        const transformations: any[] = [
+            { quality: "auto", fetch_format: "mp4" },
+        ];
+
+        // If watermark is set, add overlay transformation
+        if (userSettings?.watermarkPublicId) {
+            // Cloudinary overlay expects public_id with slashes replaced by colons
+            const overlayId = userSettings.watermarkPublicId.replace(/\//g, ':');
+            transformations.push({
+                overlay: overlayId,
+                width: 150,
+                gravity: "south_east",
+                x: 20,
+                y: 20,
+                opacity: 60,
+            });
+        }
+
         const result = await new Promise<CloudinaryUploadResult>(
             (resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
                     {
                         resource_type: "video",
                         folder: "video-uploads",
-                        transformation: [
-                            { quality: "auto", fetch_format: "mp4" }
-                        ]
+                        transformation: transformations,
                     },
                     (error, result) => {
                         if (error) reject(error);
