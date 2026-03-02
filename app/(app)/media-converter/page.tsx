@@ -12,7 +12,9 @@ import {
     ArrowRightIcon,
     SparklesIcon,
     XIcon,
+    DiamondIcon,
 } from "lucide-react";
+import ElasticSlider from "@/components/ElasticSlider";
 
 type OutputFormat = "webp" | "png" | "jpeg";
 
@@ -263,8 +265,8 @@ export default function MediaConverterPage() {
                             key={fmt}
                             onClick={() => setOutputFormat(fmt)}
                             className={`p-4 rounded-xl border-2 text-left transition-all ${isActive
-                                    ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
-                                    : "border-gray-700/50 bg-gray-800/40 hover:border-gray-600"
+                                ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
+                                : "border-gray-700/50 bg-gray-800/40 hover:border-gray-600"
                                 }`}
                         >
                             <div className={`font-bold text-lg ${isActive ? info.color : "text-gray-300"}`}>
@@ -283,14 +285,14 @@ export default function MediaConverterPage() {
                         <span className="text-sm text-gray-300 font-medium">Quality</span>
                         <span className="text-sm font-bold text-primary">{quality}%</span>
                     </div>
-                    <input
-                        type="range"
+                    <ElasticSlider
+                        defaultValue={quality}
                         min={10}
                         max={100}
                         step={5}
-                        value={quality}
-                        onChange={(e) => setQuality(Number(e.target.value))}
-                        className="range range-primary range-sm w-full"
+                        onChange={(v) => setQuality(v)}
+                        leftIcon={<DiamondIcon />}
+                        rightIcon={<SparklesIcon />}
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
                         <span>Smaller file</span>
@@ -312,8 +314,8 @@ export default function MediaConverterPage() {
                 >
                     <div
                         className={`border-2 border-dashed rounded-2xl p-16 flex flex-col items-center gap-4 transition-all ${dragOver
-                                ? "border-primary bg-primary/5"
-                                : "border-gray-600 hover:border-gray-400"
+                            ? "border-primary bg-primary/5"
+                            : "border-gray-600 hover:border-gray-400"
                             }`}
                     >
                         <div className="p-4 bg-gray-800 rounded-full">
@@ -345,12 +347,12 @@ export default function MediaConverterPage() {
                             <div
                                 key={img.id}
                                 className={`flex items-center gap-4 p-3 rounded-xl border transition-all ${img.status === "done"
-                                        ? "bg-green-500/5 border-green-500/20"
-                                        : img.status === "error"
-                                            ? "bg-red-500/5 border-red-500/20"
-                                            : img.status === "converting"
-                                                ? "bg-primary/5 border-primary/20"
-                                                : "bg-gray-800/40 border-gray-700/50"
+                                    ? "bg-green-500/5 border-green-500/20"
+                                    : img.status === "error"
+                                        ? "bg-red-500/5 border-red-500/20"
+                                        : img.status === "converting"
+                                            ? "bg-primary/5 border-primary/20"
+                                            : "bg-gray-800/40 border-gray-700/50"
                                     }`}
                             >
                                 {/* Thumbnail */}

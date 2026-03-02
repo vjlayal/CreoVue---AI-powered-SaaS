@@ -25,10 +25,10 @@ interface PrismProps {
 const Prism = ({
     height = 3.5,
     baseWidth = 5.5,
-    animationType = "rotate",
+    animationType = "hover",
     glow = 1,
     offset = { x: 0, y: 0 },
-    noise = 0.5,
+    noise = 0,
     transparent = true,
     scale = 3.6,
     hueShift = 0,

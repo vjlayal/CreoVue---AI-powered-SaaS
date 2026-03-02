@@ -15,7 +15,10 @@ import {
     TwitterIcon,
     LinkIcon,
     GlobeIcon,
+    MinimizeIcon,
+    MaximizeIcon,
 } from "lucide-react";
+import ElasticSlider from "@/components/ElasticSlider";
 
 interface SocialLink {
     id: string;
@@ -329,14 +332,14 @@ export default function QRCodePage() {
                                     {qrSize}px
                                 </span>
                             </div>
-                            <input
-                                type="range"
+                            <ElasticSlider
+                                defaultValue={qrSize}
                                 min={128}
                                 max={320}
                                 step={32}
-                                value={qrSize}
-                                onChange={(e) => setQrSize(Number(e.target.value))}
-                                className="range range-primary range-sm w-full"
+                                onChange={(v) => setQrSize(v)}
+                                leftIcon={<MinimizeIcon />}
+                                rightIcon={<MaximizeIcon />}
                             />
                         </div>
                     </div>

@@ -55,7 +55,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
   const formatDuration = useCallback((seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.round(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')} `;
   }, [])
 
   const handlePreviewError = useCallback(() => {
@@ -76,8 +76,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
     const perc = ((orig - comp) / orig) * 100;
     return Math.round(perc);
   }, [video.originalSize, video.compressedSize]);
-
-
 
 
   return (
@@ -158,3 +156,4 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
 }
 
 export default VideoCard
+
