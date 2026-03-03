@@ -130,22 +130,14 @@ export default function LandingPage() {
         {/* Feature Pills */}
         <div className="landing-features">
           {features.map((f, i) => (
-            <StarBorder
+            <div
               key={f.label}
-              color="#a78bfa"
-              speed={6}
-              className="landing-feature-star"
-              background="rgba(255, 255, 255, 0.06)"
-              style={{
-                borderRadius: "100px",
-                animationDelay: `${0.8 + i * 0.1}s`,
-              }}
+              className="landing-feature-pill"
+              style={{ animationDelay: `${0.8 + i * 0.1}s` }}
             >
-              <div className="landing-feature-pill">
-                <span className="landing-feature-icon">{f.icon}</span>
-                <span className="landing-feature-label">{f.label}</span>
-              </div>
-            </StarBorder>
+              <span className="landing-feature-icon">{f.icon}</span>
+              <span className="landing-feature-label">{f.label}</span>
+            </div>
           ))}
         </div>
 

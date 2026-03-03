@@ -707,31 +707,30 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.landing-feature-star>div:last-child {
-  border-radius: 100px !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-}
-
-.landing-feature-star:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 16px rgba(139, 92, 246, 0.15);
-}
-
 .landing-feature-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.45rem 1rem;
-  font-size: 0.82rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: rgba(200, 200, 220, 0.8);
-  transition: color 0.3s ease;
+  color: rgba(200, 200, 220, 0.85);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: landingFadeUp 0.8s ease-out forwards;
+  opacity: 0;
 }
 
-.landing-feature-star:hover .landing-feature-pill {
+.landing-feature-pill:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
   color: #c4b5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
 }
 
 .landing-feature-icon {
