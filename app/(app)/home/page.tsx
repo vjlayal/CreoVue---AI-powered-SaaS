@@ -14,9 +14,9 @@ function Home() {
   const fetchVideos = useCallback(async () => {
     try {
       const response = await axios.get('/api/videos')
-      if(Array.isArray(response.data)){
+      if (Array.isArray(response.data)) {
         setVideos(response.data)
-      }else{
+      } else {
         throw new Error('Invalid data format')
       }
     } catch (error) {
@@ -39,32 +39,42 @@ function Home() {
     document.body.removeChild(link);
   }, [])
 
-    if(loading){
-      return <div>Loading videos...</div>
+  const handleDelete = useCallback(async (videoId: string) => {
+    try {
+      await axios.delete(`/api/videos/${videoId}`);
+      setVideos((prev) => prev.filter((v) => v.id !== videoId));
+    } catch (err) {
+      console.error('Failed to delete video', err);
     }
+  }, [])
+
+  if (loading) {
+    return <div>Loading videos...</div>
+  }
 
   return (
-        <div className="container mx-auto p-4">
-          <h1 className="text-3xl font-bold mb-4 p-4">Videos</h1>
-          {videos.length === 0 ? (
-            <div className="text-center text-lg text-gray-500 p-7 bg-stone-300 rounded-2xl">
-              No videos available...
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 rounded-3xl w-full">
-              {
-                videos.map((video) => (
-                    <VideoCard
-                        key={video.id}
-                        video={video}
-                        onDownload={handleDownload}
-                      />
-                ))
-              }
-            </div>
-          )}
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4 p-4">Videos</h1>
+      {videos.length === 0 ? (
+        <div className="text-center text-lg text-gray-500 p-7 bg-stone-300 rounded-2xl">
+          No videos available...
         </div>
-      );
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 rounded-3xl w-full">
+          {
+            videos.map((video) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                onDownload={handleDownload}
+                onDelete={handleDelete}
+              />
+            ))
+          }
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Home
