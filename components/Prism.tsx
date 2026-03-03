@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-// @ts-expect-error - ogl doesn't have types
+
 import { Renderer, Triangle, Program, Mesh } from "ogl";
 
 interface PrismProps {
