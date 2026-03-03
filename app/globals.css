@@ -229,3 +229,618 @@ body {
 .staggered-menu-overlay.open .staggered-menu-item:nth-child(9) {
   transition-delay: 0.45s;
 }
+
+/* ===== Landing Page ===== */
+.landing-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.landing-prism-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---- Floating Particles ---- */
+.landing-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.landing-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.8), rgba(129, 140, 248, 0.4));
+  animation: particleDrift linear infinite;
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-120px) translateX(30px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ---- Decorative Orbs ---- */
+.landing-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.landing-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12), transparent 70%);
+  top: -10%;
+  right: -8%;
+  animation: orbFloat1 12s ease-in-out infinite;
+}
+
+.landing-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+  bottom: -5%;
+  left: -5%;
+  animation: orbFloat2 15s ease-in-out infinite;
+}
+
+.landing-orb-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(196, 181, 253, 0.08), transparent 70%);
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: orbFloat3 10s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-40px, 30px);
+  }
+}
+
+@keyframes orbFloat2 {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(30px, -25px);
+  }
+}
+
+@keyframes orbFloat3 {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-40px);
+  }
+}
+
+/* ---- Glassmorphic Navbar ---- */
+.landing-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(10, 10, 22, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  animation: landingFadeDown 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes landingFadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.landing-navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.landing-navbar-links {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.landing-nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(200, 200, 220, 0.75);
+  text-decoration: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+}
+
+.landing-nav-link:hover {
+  color: #e0d5ff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.landing-nav-btn {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem 1.4rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.4));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.landing-nav-btn:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.7), rgba(99, 102, 241, 0.6));
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ---- Hero Content ---- */
+.landing-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Badge */
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  animation: landingFadeUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.landing-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a78bfa;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.4);
+  }
+
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 6px rgba(167, 139, 250, 0);
+  }
+}
+
+@keyframes landingFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Brand Name */
+.landing-brand-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+  animation: landingFadeUp 0.9s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.landing-brand {
+  font-size: clamp(4.5rem, 14vw, 10rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(135deg,
+      #ffffff 0%,
+      #e8ddff 20%,
+      #c4b5fd 40%,
+      #a78bfa 55%,
+      #818cf8 70%,
+      #c4b5fd 85%,
+      #ffffff 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: landingGradientShift 6s ease infinite;
+  filter: drop-shadow(0 0 60px rgba(139, 92, 246, 0.35));
+}
+
+@keyframes landingGradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.landing-brand-glow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(ellipse at center,
+      rgba(139, 92, 246, 0.18) 0%,
+      rgba(99, 102, 241, 0.06) 40%,
+      transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: landingPulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes landingPulseGlow {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* Motto */
+.landing-motto {
+  font-size: clamp(1.15rem, 2.5vw, 1.65rem);
+  font-weight: 500;
+  color: rgba(230, 220, 255, 0.92);
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  animation: landingFadeUp 0.9s ease-out 0.25s forwards;
+  opacity: 0;
+}
+
+.landing-sub-motto {
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  font-weight: 400;
+  color: rgba(180, 180, 210, 0.6);
+  max-width: 520px;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  animation: landingFadeUp 0.9s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+/* CTA Group */
+.landing-cta-group {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  animation: landingFadeUp 0.9s ease-out 0.55s forwards;
+  opacity: 0;
+}
+
+/* Buttons */
+.landing-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 2.4rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 14px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.landing-btn-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #818cf8 100%);
+  color: #ffffff;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow:
+    0 0 30px rgba(139, 92, 246, 0.3),
+    0 8px 32px rgba(99, 102, 241, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.landing-btn-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 0 50px rgba(139, 92, 246, 0.45),
+    0 12px 40px rgba(99, 102, 241, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.landing-btn-primary:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+.landing-btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(200, 200, 220, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.landing-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: #e0d5ff;
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+/* Button shine effect */
+.landing-btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.landing-btn-primary:hover .landing-btn-shine {
+  left: 100%;
+}
+
+/* Arrow icon animation */
+.landing-btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.landing-btn-primary:hover .landing-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ---- Feature Pills ---- */
+.landing-features {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+  max-width: 650px;
+}
+
+.landing-feature-star {
+  animation: landingFadeUp 0.8s ease-out forwards;
+  opacity: 0;
+  border-radius: 100px !important;
+  padding: 1.5px !important;
+  overflow: hidden !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.landing-feature-star>div:last-child {
+  border-radius: 100px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+}
+
+.landing-feature-star:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.15);
+}
+
+.landing-feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(200, 200, 220, 0.8);
+  transition: color 0.3s ease;
+}
+
+.landing-feature-star:hover .landing-feature-pill {
+  color: #c4b5fd;
+}
+
+.landing-feature-icon {
+  font-size: 0.95rem;
+}
+
+.landing-feature-label {
+  letter-spacing: 0.01em;
+}
+
+/* ---- Social Proof ---- */
+.landing-social-proof {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.75rem;
+  animation: landingFadeUp 0.9s ease-out 1s forwards;
+  opacity: 0;
+}
+
+.landing-social-avatars {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.landing-social-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(10, 10, 22, 0.8);
+  background: rgba(139, 92, 246, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  margin-left: -8px;
+  animation: landingFadeUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.landing-social-avatar:first-child {
+  margin-left: 0;
+}
+
+.landing-social-text {
+  font-size: 0.85rem;
+  color: rgba(180, 180, 210, 0.5);
+}
+
+.landing-social-text strong {
+  color: rgba(200, 200, 220, 0.8);
+  font-weight: 600;
+}
+
+/* Bottom accent */
+.landing-bottom-accent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      #8b5cf6 30%,
+      #818cf8 50%,
+      #8b5cf6 70%,
+      transparent 100%);
+  opacity: 0.5;
+  z-index: 2;
+}
+
+/* ===== Landing Page Responsive ===== */
+@media (max-width: 640px) {
+  .landing-navbar {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .landing-navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .landing-content {
+    padding: 1.5rem 1rem;
+    margin-top: 3rem;
+  }
+
+  .landing-cta-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .landing-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .landing-features {
+    gap: 0.4rem;
+  }
+
+  .landing-feature-pill {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.8rem;
+  }
+
+  .landing-social-proof {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

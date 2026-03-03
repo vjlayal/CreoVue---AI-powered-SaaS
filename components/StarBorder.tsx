@@ -8,6 +8,7 @@ interface StarBorderProps {
     color?: string;
     speed?: number; // seconds per rotation
     style?: React.CSSProperties;
+    background?: string;
 }
 
 const StarBorder: React.FC<StarBorderProps> = ({
@@ -16,6 +17,7 @@ const StarBorder: React.FC<StarBorderProps> = ({
     color = "#a78bfa",
     speed = 4,
     style,
+    background = "rgba(8, 8, 18, 0.95)",
 }) => {
     const gradientRef = useRef<HTMLDivElement>(null);
     const animFrameRef = useRef<number>(0);
@@ -66,7 +68,7 @@ const StarBorder: React.FC<StarBorderProps> = ({
                     position: "relative",
                     zIndex: 1,
                     borderRadius: "0.75rem",
-                    background: "rgba(8, 8, 18, 0.95)",
+                    background,
                 }}
             >
                 {children}

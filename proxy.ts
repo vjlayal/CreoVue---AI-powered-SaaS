@@ -6,7 +6,6 @@ const isPublicRoute = createRouteMatcher([
     "/",
     "/sign-in",
     "/sign-up",
-    "/home",
 ])
 
 const isPublicApiRoute = createRouteMatcher([
@@ -37,16 +36,16 @@ export default clerkMiddleware(async (auth, req) => {
     const isDashboard = currentUrl.pathname === "/home"
     const isApiRequest = currentUrl.pathname.startsWith("/api")
 
-    if(userId && isPublicRoute(req) && !isDashboard) {
+    if (userId && isPublicRoute(req) && !isDashboard) {
         return NextResponse.redirect(new URL("/home", req.url))
     }
 
     //if not logged in and trying to access a private route, redirect to sign in
-    if(!userId){
-        if(!isPublicApiRoute(req) && !isPublicRoute(req)){
+    if (!userId) {
+        if (!isPublicApiRoute(req) && !isPublicRoute(req)) {
             return NextResponse.redirect(new URL("/sign-in", req.url))
         }
-        if(isApiRequest && !isPublicApiRoute(req)){
+        if (isApiRequest && !isPublicApiRoute(req)) {
             return NextResponse.redirect(new URL("/sign-in", req.url))
         }
     }
@@ -54,5 +53,5 @@ export default clerkMiddleware(async (auth, req) => {
 })
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+    matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }
