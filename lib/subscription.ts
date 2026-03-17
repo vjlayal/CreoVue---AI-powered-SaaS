@@ -32,19 +32,18 @@ export const TIER_FEATURES: Record<Tier, string[]> = {
 };
 
 export async function getUserTier(userId: string): Promise<Tier> {
-    if (!userId) return "premium";
+    if (!userId) return "basic";
 
-    // const sub = await prisma.subscription.findUnique({
-    //     where: { userId },
-    // });
+    const sub = await prisma.subscription.findUnique({
+        where: { userId },
+    });
 
-    // if (!sub) return "basic";
+    if (!sub) return "basic";
 
-    // const now = new Date();
-    // if (sub.endDate < now) {
-    //     return "basic";
-    // }
+    const now = new Date();
+    if (sub.endDate < now) {
+        return "basic";
+    }
 
-    // return sub.tier as Tier;
-    return "premium";
+    return sub.tier as Tier;
 }
