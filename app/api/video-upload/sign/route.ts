@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { auth } from '@clerk/nextjs/server';
 import prisma from "@/lib/prisma";
+import { getUserTier, MAX_USER_TOTAL_VIDEOS, MAX_USER_HOURLY_VIDEOS } from "@/lib/subscription";
 
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -9,9 +10,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const MAX_USER_TOTAL_VIDEOS = 10;
-const MAX_USER_HOURLY_VIDEOS = 3;
-const MAX_GLOBAL_VIDEOS = 100;
+const MAX_GLOBAL_VIDEOS = 1000;
 
 export async function POST() {
     try {
@@ -20,6 +19,10 @@ export async function POST() {
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+
+        const tier = await getUserTier(userId);
+        const maxTotal = MAX_USER_TOTAL_VIDEOS[tier];
+        const maxHourly = MAX_USER_HOURLY_VIDEOS[tier];
 
         // 1. Global Limit Check
         const totalVideos = await prisma.video.count();
@@ -33,9 +36,9 @@ export async function POST() {
         const userTotalVideos = await prisma.video.count({
             where: { userId }
         });
-        if (userTotalVideos >= MAX_USER_TOTAL_VIDEOS) {
+        if (userTotalVideos >= maxTotal) {
             return NextResponse.json({
-                error: `You have reached your limit of ${MAX_USER_TOTAL_VIDEOS} videos.`
+                error: `You have reached your tier limit of ${maxTotal} videos.`
             }, { status: 403 });
         }
 
@@ -47,9 +50,9 @@ export async function POST() {
                 createdAt: { gte: oneHourAgo }
             }
         });
-        if (hourlyVideos >= MAX_USER_HOURLY_VIDEOS) {
+        if (hourlyVideos >= maxHourly) {
             return NextResponse.json({
-                error: `Rate limit exceeded. You can upload ${MAX_USER_HOURLY_VIDEOS} videos per hour.`
+                error: `Rate limit exceeded. You can upload ${maxHourly} videos per hour.`
             }, { status: 429 });
         }
 

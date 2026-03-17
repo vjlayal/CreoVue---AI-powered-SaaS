@@ -20,7 +20,18 @@ interface PrismProps {
     bloom?: number;
     suspendWhenOffscreen?: boolean;
     timeScale?: number;
+    colorTint?: string;
 }
+
+const hexToRgb = (hex: string) => {
+    if (!hex) return new Float32Array([1, 1, 1]);
+    let h = hex.replace("#", "");
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    const r = parseInt(h.slice(0, 2), 16) / 255;
+    const g = parseInt(h.slice(2, 4), 16) / 255;
+    const b = parseInt(h.slice(4, 6), 16) / 255;
+    return new Float32Array([r, g, b]);
+};
 
 const Prism = ({
     height = 3.5,
@@ -38,6 +49,7 @@ const Prism = ({
     bloom = 1,
     suspendWhenOffscreen = false,
     timeScale = 0.5,
+    colorTint,
 }: PrismProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -63,6 +75,9 @@ const Prism = ({
         const TS = Math.max(0, timeScale || 1);
         const HOVSTR = Math.max(0, hoverStrength || 1);
         const INERT = Math.max(0, Math.min(1, inertia || 0.12));
+        
+        const CTINT = colorTint ? hexToRgb(colorTint) : new Float32Array([1, 1, 1]);
+        const HAS_TINT = colorTint ? 1 : 0;
 
         // Cap DPR at 1 for performance — background doesn't need retina sharpness
         const dpr = 1;
@@ -116,6 +131,8 @@ const Prism = ({
       uniform float uMinAxis;
       uniform float uPxScale;
       uniform float uTimeScale;
+      uniform vec3  uColorTint;
+      uniform int   uHasTint;
 
       vec4 tanh4(vec4 x){
         vec4 e2x = exp(2.0*x);
@@ -205,6 +222,12 @@ const Prism = ({
           col = clamp(hueRotation(uHueShift) * col, 0.0, 1.0);
         }
 
+        if (uHasTint == 1) {
+            // Apply a strong tint while keeping some depth
+            col = mix(col, vec3(L) * uColorTint * 1.8, 0.85);
+            col = clamp(col, 0.0, 1.0);
+        }
+
         gl_FragColor = vec4(col, o.a);
       }
     `;
@@ -239,6 +262,8 @@ const Prism = ({
                     value: 1 / ((gl.drawingBufferHeight || 1) * 0.1 * SCALE),
                 },
                 uTimeScale: { value: TS },
+                uColorTint: { value: CTINT },
+                uHasTint: { value: HAS_TINT },
             },
         });
         const mesh = new Mesh(gl, { geometry, program });
@@ -483,6 +508,7 @@ const Prism = ({
         inertia,
         bloom,
         suspendWhenOffscreen,
+        colorTint,
     ]);
 
     return (

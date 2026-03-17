@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { CldImage, CldOgImage } from 'next-cloudinary';
+import FeatureGate from '@/components/FeatureGate';
 
 const socialFormats = {
   "Instagram Square (1:1)": { width: 1080, height: 1080, aspectRatio: "1:1" },
@@ -85,6 +86,7 @@ export default function SocialShare() {
 
 
   return (
+    <FeatureGate>
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6 text-center">
         Social Media Image Creator
@@ -178,6 +180,7 @@ export default function SocialShare() {
         </div>
       </div>
     </div>
+    </FeatureGate>
   );
 }
 

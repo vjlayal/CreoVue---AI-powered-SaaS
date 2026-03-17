@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import StarBorder from "@/components/StarBorder";
+import { useTier } from "@/components/TierProvider";
 
 const Prism = dynamic(() => import("@/components/Prism"), { ssr: false });
 
@@ -17,10 +18,18 @@ const features = [
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false);
+  const tier = useTier();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Map tiers to Prism config
+  const prismConfig = {
+    basic: { hueShift: 0, colorFrequency: 0.5, glow: 0.1 },
+    intermediate: { hueShift: 300, colorFrequency: 1.2, glow: 0.3 },
+    premium: { hueShift: 220, colorFrequency: 1.7, glow: 0.5 },
+  }[tier] || { hueShift: 220, colorFrequency: 1.7, glow: 0.5 };
 
   return (
     <div className="landing-page">
@@ -28,12 +37,12 @@ export default function LandingPage() {
       <div className="landing-prism-bg">
         <Prism
           animationType="hover"
-          hueShift={220}
-          glow={0.5}
+          hueShift={prismConfig.hueShift}
+          glow={prismConfig.glow}
           bloom={1.4}
           noise={0}
           scale={3.5}
-          colorFrequency={1.7}
+          colorFrequency={prismConfig.colorFrequency}
           timeScale={0.4}
           transparent={false}
           hoverStrength={3}

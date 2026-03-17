@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback } from "react";
+import FeatureGate from "@/components/FeatureGate";
 import { QRCodeCanvas } from "qrcode.react";
 import {
     QrCodeIcon,
@@ -146,6 +147,7 @@ export default function QRCodePage() {
     const hasValidUrl = selectedLink.url.trim().length > 0;
 
     return (
+        <FeatureGate>
         <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="flex items-center gap-3 mb-8">
@@ -424,5 +426,6 @@ export default function QRCodePage() {
                 </div>
             </div>
         </div>
+        </FeatureGate>
     );
 }

@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import FeatureGate from '@/components/FeatureGate';
 
 function VideoUpload() {
   const [file, setFile] = useState<File | null>(null)
@@ -104,6 +105,7 @@ function VideoUpload() {
 
 
   return (
+    <FeatureGate>
     <div className="container mx-auto p-4 max-w-2xl">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Upload Video</h1>
@@ -178,6 +180,7 @@ function VideoUpload() {
         </button>
       </form>
     </div>
+    </FeatureGate>
   );
 }
 

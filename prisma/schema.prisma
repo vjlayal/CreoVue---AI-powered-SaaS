@@ -28,3 +28,17 @@ model UserSetting {
   watermarkUrl      String?
   updatedAt         DateTime @updatedAt
 }
+
+model Subscription {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  tier               String   @default("basic") // basic, intermediate, premium
+  startDate          DateTime @default(now())
+  endDate            DateTime
+  razorpayOrderId    String?
+  razorpayPaymentId  String?
+  razorpaySignature  String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+

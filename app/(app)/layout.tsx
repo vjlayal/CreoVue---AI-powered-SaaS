@@ -16,10 +16,14 @@ import {
   SettingsIcon,
   RepeatIcon,
   QrCodeIcon,
+  LockIcon,
+  SparklesIcon,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import ClickSpark from "@/components/ClickSpark";
 import StarBorder from "@/components/StarBorder";
+import { useTier } from "@/components/TierProvider";
+import { TIER_LABELS, TIER_FEATURES } from "@/lib/subscription";
 
 const Prism = dynamic(() => import("@/components/Prism"), { ssr: false });
 
@@ -29,6 +33,7 @@ const sidebarItems = [
   { href: "/video-upload", icon: UploadIcon, label: "Video Upload" },
   { href: "/media-converter", icon: RepeatIcon, label: "Media Converter" },
   { href: "/qr-toolkit", icon: QrCodeIcon, label: "QR Toolkit" },
+  { href: "/ai-caption", icon: SparklesIcon, label: "AI Captions" },
   { href: "/settings", icon: SettingsIcon, label: "Settings" },
 ];
 
@@ -43,6 +48,18 @@ export default function AppLayout({
   const router = useRouter();
   const { signOut } = useClerk();
   const { user } = useUser();
+  const tier = useTier();
+
+  const TIER_ACCENT: Record<string, string> = {
+    basic: "#78716c",
+    intermediate: "#f59e0b",
+    premium: "#a78bfa",
+  };
+  const accentColor = TIER_ACCENT[tier] || "#a78bfa";
+
+  const isFeatureLocked = (href: string) => {
+    return !TIER_FEATURES[tier]?.includes(href);
+  };
 
   const handleLogoClick = () => {
     router.push("/");
@@ -58,6 +75,7 @@ export default function AppLayout({
     isMobile = false
   ) => {
     const isActive = pathname === item.href;
+    const locked = isFeatureLocked(item.href);
 
     const linkContent = (
       <Link
@@ -65,16 +83,17 @@ export default function AppLayout({
         className={`flex items-center ${isMobile ? "space-x-4 px-6 py-4" : "space-x-4 px-4 py-3"} rounded-xl transition-all duration-200`}
         style={{
           background: isActive
-            ? "linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.15))"
+            ? `linear-gradient(135deg, ${accentColor}40, ${accentColor}26)`
             : "transparent",
           border: isActive
-            ? "1px solid rgba(139, 92, 246, 0.3)"
+            ? `1px solid ${accentColor}4D`
             : "1px solid transparent",
           boxShadow: isActive
-            ? "0 0 15px rgba(139, 92, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+            ? `0 0 15px ${accentColor}1A, inset 0 1px 0 rgba(255, 255, 255, 0.05)`
             : "none",
-          color: isActive ? "#e0d5ff" : "rgba(200, 200, 220, 0.7)",
+          color: isActive ? "#e0d5ff" : locked ? "rgba(150, 150, 170, 0.45)" : "rgba(200, 200, 220, 0.7)",
           fontSize: isMobile ? "1.15rem" : undefined,
+          opacity: locked ? 0.6 : 1,
         }}
         onClick={() => {
           setSidebarOpen(false);
@@ -96,14 +115,15 @@ export default function AppLayout({
             (e.currentTarget as HTMLElement).style.border =
               "1px solid transparent";
             (e.currentTarget as HTMLElement).style.color =
-              "rgba(200, 200, 220, 0.7)";
+              locked ? "rgba(150, 150, 170, 0.45)" : "rgba(200, 200, 220, 0.7)";
           }
         }}
       >
         <item.icon className={isMobile ? "w-6 h-6" : "w-5 h-5"} />
-        <span className={isMobile ? "font-semibold" : "text-sm font-medium"}>
+        <span className={`flex-1 ${isMobile ? "font-semibold" : "text-sm font-medium"}`}>
           {item.label}
         </span>
+        {locked && <LockIcon className="w-3.5 h-3.5 text-gray-500" />}
       </Link>
     );
 
@@ -111,7 +131,7 @@ export default function AppLayout({
     if (isActive) {
       return (
         <StarBorder
-          color="#a78bfa"
+          color={accentColor}
           speed={4}
           className="w-full"
           style={{ display: "block", width: "100%" }}
@@ -126,7 +146,7 @@ export default function AppLayout({
 
   return (
     <ClickSpark
-      sparkColor="#a78bfa"
+      sparkColor={accentColor}
       sparkSize={12}
       sparkRadius={20}
       sparkCount={8}
@@ -147,13 +167,13 @@ export default function AppLayout({
         >
           <Prism
             animationType="hover"
-            hueShift={220}
-            glow={0.6}
-            bloom={0.7}
+            colorTint={accentColor}
+            glow={tier === "premium" ? 0.8 : tier === "intermediate" ? 0.5 : 0.15}
+            bloom={tier === "premium" ? 0.9 : tier === "intermediate" ? 0.6 : 0.15}
             noise={0}
             scale={4.0}
-            colorFrequency={1.0}
-            timeScale={0.3}
+            colorFrequency={tier === "basic" ? 0.1 : tier === "intermediate" ? 0.8 : 1.2}
+            timeScale={tier === "basic" ? 0.15 : 0.3}
             transparent={false}
           />
           <div
@@ -206,7 +226,7 @@ export default function AppLayout({
                     className="normal-case text-4xl p-5 font-bold tracking-tight cursor-pointer"
                     style={{
                       background:
-                        "linear-gradient(135deg, #fff 0%, #a78bfa 50%, #818cf8 100%)",
+                        `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, ${accentColor}cc 100%)`,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
@@ -223,7 +243,7 @@ export default function AppLayout({
                       <div
                         className="w-9 h-9 rounded-full"
                         style={{
-                          border: "2px solid rgba(167, 139, 250, 0.5)",
+                          border: `2px solid ${accentColor}80`,
                           padding: "1px",
                         }}
                       >
@@ -242,9 +262,11 @@ export default function AppLayout({
                         {user.username ||
                           user.emailAddresses[0].emailAddress}
                       </span>
-                      <span className="text-xs text-violet-300/70">
-                        Plan:{" "}
-                        {(user as any)?.publicMetadata?.plan ?? "Free"}
+                      <span
+                        className="text-xs font-semibold"
+                        style={{ color: accentColor }}
+                      >
+                        {TIER_LABELS[tier]}
                       </span>
                     </div>
                     <button
@@ -293,14 +315,14 @@ export default function AppLayout({
               <div
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.15))",
+                    `linear-gradient(135deg, ${accentColor}4D, ${accentColor}26)`,
                   borderRadius: "16px",
                   padding: "12px",
-                  border: "1px solid rgba(139, 92, 246, 0.2)",
-                  boxShadow: "0 0 20px rgba(139, 92, 246, 0.15)",
+                  border: `1px solid ${accentColor}33`,
+                  boxShadow: `0 0 20px ${accentColor}26`,
                 }}
               >
-                <ImageIcon className="w-8 h-8 text-violet-400" />
+                <ImageIcon className="w-8 h-8" style={{ color: accentColor }} />
               </div>
             </div>
 
@@ -384,7 +406,7 @@ export default function AppLayout({
               className="text-3xl font-bold"
               style={{
                 background:
-                  "linear-gradient(135deg, #fff 0%, #a78bfa 50%, #818cf8 100%)",
+                  `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, ${accentColor}cc 100%)`,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
