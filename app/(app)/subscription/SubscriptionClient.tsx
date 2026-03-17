@@ -19,21 +19,36 @@ const plans: Plan[] = [
     title: "Basic (Free)",
     price: "₹0",
     period: "3 months",
-    features: ["Video Uploads", "Home Dashboard", "Minimalist Monochome UI"],
+    features: [
+      "Image & Video Uploads",
+      "Personal Dashboard",
+      "Standard Usage Limits"
+    ],
   },
   {
     id: "intermediate",
     title: "Pro (Intermediate)",
     price: "₹499",
     period: "6 months",
-    features: ["+ Social Share & QR Toolkit", "Higher Usage Limits", "Warm Amber/Rose UI"],
+    features: [
+      "Image & Video Uploads",
+      "Social Media Quick-Share",
+      "Custom QR Code Toolkit",
+      "Increased Usage Limits"
+    ],
   },
   {
     id: "premium",
     title: "Premium",
     price: "₹999",
     period: "12 months",
-    features: ["+ AI Description Generator", "+ Media Converter", "Ultra Vivid Animations UI"],
+    features: [
+      "Custom QR Code Toolkit",
+      "Social Media Quick-Share",
+      "Smart Media Converter",
+      "AI Caption Generator (Multimodal)",
+      "Maximum Usage Limits"
+    ],
   },
 ];
 
