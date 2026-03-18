@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server';
 import { getUserTier } from "@/lib/subscription";
 import { TierProvider } from "@/components/TierProvider";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <TierProvider tier={tier}>
             {children}
+            <Analytics />
           </TierProvider>
         </body>
       </html>

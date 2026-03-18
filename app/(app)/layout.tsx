@@ -29,7 +29,7 @@ const Prism = dynamic(() => import("@/components/Prism"), { ssr: false });
 
 const sidebarItems = [
   { href: "/home", icon: LayoutDashboardIcon, label: "Home Page" },
-  { href: "/social-share", icon: Share2Icon, label: "Social Share" },
+  { href: "/social-share", icon: Share2Icon, label: "Smart Crop" },
   { href: "/video-upload", icon: UploadIcon, label: "Video Upload" },
   { href: "/media-converter", icon: RepeatIcon, label: "Media Converter" },
   { href: "/qr-toolkit", icon: QrCodeIcon, label: "QR Toolkit" },

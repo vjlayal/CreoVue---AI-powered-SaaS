@@ -170,8 +170,14 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload, onDelete }) =>
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="text-sm font-semibold">
-              Compression:{" "}
-              <span className="text-green-600">{compressionPercentage}%</span>
+              {compressionPercentage <= 0 ? (
+                <span className="text-green-500 font-bold">Already Optimized! ✅</span>
+              ) : (
+                <>
+                  Compression:{" "}
+                  <span className="text-green-600">{compressionPercentage}%</span>
+                </>
+              )}
             </div>
             <button
               className="btn rounded-b-xl bg-gray-800 border-2 border-stone-400 btn-sm p-4"

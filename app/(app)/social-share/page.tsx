@@ -89,7 +89,7 @@ export default function SocialShare() {
     <FeatureGate>
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6 text-center">
-        Social Media Image Creator
+        Smart Crop Creator
       </h1>
 
       <div className="card bg-stone-800  rounded-xl">
@@ -114,7 +114,7 @@ export default function SocialShare() {
 
           {uploadedImage && (
             <div className="mt-6">
-              <h2 className="text-l text-stone-400 mb-4 ">Select Social Media Format</h2>
+              <h2 className="text-l text-stone-400 mb-4 ">Select Smart Crop Format</h2>
               <div className="form-control">
                 <select
                   className="select select-bordered bg-stone-900 w-full"
@@ -142,7 +142,7 @@ export default function SocialShare() {
                   <CldOgImage src="<publicId>"
                     width={socialFormats[selectedFormat].width}
                     height={socialFormats[selectedFormat].height}
-                    alt="Social Media Preview"
+                    alt="Smart Crop Preview"
                     overlays={[
                       {
                         publicId: uploadedImage!,

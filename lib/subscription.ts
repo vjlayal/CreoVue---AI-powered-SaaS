@@ -46,4 +46,5 @@ export async function getUserTier(userId: string): Promise<Tier> {
     }
 
     return sub.tier as Tier;
+
 }

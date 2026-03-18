@@ -1,55 +1,43 @@
-# CreoVue — AI powered SaaS
+# CreoVue - AI-Powered Creative Suite
 
-CreoVue is a Next.js + TypeScript video SaaS prototype that demonstrates authenticated uploads, asset management (Cloudinary), and a simple subscription UI. It is built as a starting point for a scalable media-handling product.
+## Project Overview
+CreoVue is an AI-powered SaaS platform meticulously crafted for creators. It provides an all-in-one suite of tools including AI Smart Crop for multi-platform social media sharing, AI-generated multimodal captions, smart media conversions, and a custom QR Code toolkit. 
 
-## Key features
-- Auth: Clerk (sign-up / sign-in flows)
-- Media: Upload and manage images & videos (Cloudinary)
-- Persistence: Prisma ORM with PostgreSQL (NeonDB)
-- UI: Next.js (App Router), React, Tailwind CSS + DaisyUI
-- Subscription UI: interactive plan cards (non‑functional placeholder)
-- Dev ergonomics: TypeScript, ESLint, Prisma migrations
+## Features
+- **Smart Crop**: Upload once and let AI intelligently crop and reframe your content for Instagram, Twitter, and Facebook.
+- **AI Captions**: Our multimodal AI analyzes your video/images to generate highly contextual captions and tags.
+- **Media Converter**: Seamlessly convert between diverse video and image formats.
+- **Video Optimization**: Cloudinary-powered automatic compression, watermarking, and thumbnail generation.
+- **QR Toolkit**: Generate and customize high-resolution QR codes mapped to your social links.
 
-## Tech stack
-- Next.js (App Router)
-- React + TypeScript
-- Prisma (Postgres)
-- Cloudinary (media storage)
-- Clerk (authentication)
-- Tailwind CSS + DaisyUI (styling)
+## Tech Stack
+- **Framework**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4, DaisyUI, Framer Motion (via standard classes)
+- **Database**: PostgreSQL (Neon DB), Prisma ORM
+- **Media Processing**: Cloudinary SDK, local FFmpeg (`@ffmpeg/ffmpeg`)
+- **AI Engines**: Google Gemini / Groq Integrations
+- **Auth & Payments**: Clerk Authentication, Razorpay
+- **Analytics & Observability**: Vercel Analytics, Sentry
 
-## Quick start (local)
-1. Clone repository
-2. Create `.env` in project root with required variables (example):
-   - DATABASE_URL="postgresql://..."
-   - CLOUDINARY_URL="cloudinary://<key>:<secret>@<cloud_name>"
-   - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...
-   - CLERK_SECRET_KEY=...
-3. Install and generate Prisma client:
-   npm install
-   npx prisma generate
-   npx prisma migrate dev --name init
-4. Run dev server:
-   npm run dev
-5. Open http://localhost:3000
+## Setup & Installation
+1. Clone this repository locally.
+2. Run `npm install` to install all necessary dependencies.
+3. Configure your environment variables in a root `.env` file (requires API keys for Clerk, Database, Cloudinary, Razorpay, Sentry, and LLM providers).
+4. Synchronize the database schema by running `npx prisma db push`.
+5. Start the development server with `npm run dev`.
 
-## Deployment
-Recommended: Vercel (connect repo, set environment variables listed above). Ensure Prisma migrations are applied and Cloudinary + Clerk credentials are added to the deployment environment.
+## Architecture Diagram
+```mermaid
+graph TD
+    User([User]) --> Auth{Clerk Authentication}
+    Auth --> App[Next.js Application]
+    App --> API[API Routes / Server Actions]
+    API --> Cloudinary[Cloudinary Processing]
+    API --> DB[(Neon PostgreSQL)]
+    API --> AI{Google Gemini / Groq}
+    App --> Razorpay[Razorpay Subscription Billing]
+```
 
-## Project structure (high level)
-- app/ — Next.js app routes & pages (App Router)
-- app/api/ — server API routes (uploads, metadata)
-- components/ — reusable UI components (VideoCard, etc.)
-- prisma/ — schema & migrations
-- styles/ — global Tailwind/DaisyUI styles
-
-## Notes & recommendations
-- Large file uploads: consider direct-to-Cloudinary client uploads or server streaming (busboy/formidable) to avoid Next body-size limits.
-- Persistence of subscription state: currently UI-only; persist to Clerk metadata or DB for production.
-- Keep `.env` out of version control.
-
-## Contributing
-Issues and PRs welcome. For significant changes (payments, streaming uploads), open an issue first to discuss design.
-## License
-MIT
-
+## Testing
+Unit and component testing is set up using **Vitest** and **React Testing Library**.
+- To execute tests: `npm test`

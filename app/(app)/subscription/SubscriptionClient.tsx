@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import { Check, Minus } from "lucide-react";
 import { useTier } from "@/components/TierProvider";
 
 type Plan = {
@@ -147,8 +148,13 @@ export default function SubscriptionClient() {
         {plans.map((plan) => (
           <div
             key={plan.id}
-            className={`card border ${currentTier === plan.id ? "border-primary bg-gray-950" : "border-stone-600"} shadow-lg hover:border-white rounded-xl transition p-4`}
+            className={`card border relative ${currentTier === plan.id ? "border-primary bg-gray-950" : "border-stone-600"} shadow-lg hover:border-white rounded-xl transition p-4`}
           >
+            {plan.id === "intermediate" && (
+              <div className="absolute top-0 right-0 -mt-3 -mr-3 bg-linear-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-orange-300 z-10">
+                Most Popular
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{plan.title}</h3>
               <div className="text-right">
@@ -167,7 +173,7 @@ export default function SubscriptionClient() {
                 <div className="text-sm text-green-500 font-semibold p-2">Current Plan</div>
               ) : (
                 <button
-                  className={`btn btn-primary border-2 rounded-xl bg-gray-950 btn-sm`}
+                  className={`btn ${plan.id === "intermediate" ? 'bg-linear-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white border-none shadow-[0_0_15px_rgba(245,158,11,0.4)]' : 'btn-primary border-2 bg-gray-950'} rounded-xl btn-sm`}
                   onClick={() => handlePayment(plan.id)}
                   disabled={loading && selected === plan.id}
                 >
@@ -177,6 +183,96 @@ export default function SubscriptionClient() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Feature Comparison Table */}
+      <div className="mt-20 w-full">
+        <h2 className="text-2xl font-bold mb-8 text-center bg-clip-text text-transparent bg-linear-to-r from-stone-200 to-stone-400">Feature Comparison</h2>
+        <div className="overflow-x-auto rounded-3xl border border-stone-800 bg-stone-900/50 shadow-xl">
+          <table className="table w-full text-stone-300">
+            <thead>
+              <tr className="border-b border-stone-700 bg-stone-950">
+                <th className="text-left py-6 px-6 font-semibold text-stone-200">Features</th>
+                <th className="text-center py-6 px-6 font-semibold text-stone-200">Basic</th>
+                <th className="text-center py-6 px-6 font-semibold text-amber-500">Pro</th>
+                <th className="text-center py-6 px-6 font-semibold text-purple-400">Premium</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Feature Rows */}
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Image & Video Uploads</td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Personal Dashboard</td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Smart Crop (Social Frame)</td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Custom QR Code Toolkit</td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Smart Media Converter</td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">AI Multimodal Captions</td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Minus className="w-5 h-5 mx-auto text-stone-600" /></td>
+                <td className="text-center"><Check className="w-5 h-5 mx-auto text-stone-300" /></td>
+              </tr>
+              <tr className="hover:bg-stone-800/30 transition-colors">
+                <td className="py-6 px-6">Usage Limits</td>
+                <td className="text-center text-sm text-stone-400">Standard</td>
+                <td className="text-center text-sm font-semibold text-amber-500">Increased</td>
+                <td className="text-center text-sm font-bold text-purple-400">Maximum</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="mt-20 mb-12 max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold mb-8 text-center bg-clip-text text-transparent bg-linear-to-r from-white to-stone-400">Frequently Asked Questions</h2>
+        <div className="space-y-4">
+          <div className="collapse collapse-plus bg-stone-900 border border-stone-800 rounded-xl">
+            <input type="radio" name="faq-accordion" defaultChecked /> 
+            <div className="collapse-title text-lg font-medium">Can I upgrade or downgrade my plan later?</div>
+            <div className="collapse-content text-stone-400">
+              <p>Yes, you can upgrade your plan at any time. Changes to your subscription will be pro-rated. Downgrades will take effect at the start of your next billing cycle.</p>
+            </div>
+          </div>
+          <div className="collapse collapse-plus bg-stone-900 border border-stone-800 rounded-xl">
+            <input type="radio" name="faq-accordion" /> 
+            <div className="collapse-title text-lg font-medium">What happens if I exceed my usage limits?</div>
+            <div className="collapse-content text-stone-400">
+              <p>If you hit your tier limits, you&apos;ll be prompted to upgrade to the next tier. Don&apos;t worry, your existing media will remain safe and accessible.</p>
+            </div>
+          </div>
+          <div className="collapse collapse-plus bg-stone-900 border border-stone-800 rounded-xl">
+            <input type="radio" name="faq-accordion" /> 
+            <div className="collapse-title text-lg font-medium">Do you offer refunds?</div>
+            <div className="collapse-content text-stone-400">
+              <p>We do not offer refunds for partial subscription periods. However, you can cancel your subscription at any time to prevent future charges.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
