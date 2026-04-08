@@ -25,6 +25,9 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" data-theme="dark" className={`theme-${tier}`}>
+        <head>
+          <meta name="google-site-verification" content="7AE83NTJUIt-MST0AjbX8HM3ejyOhcZE6Ti6egiVPQI" />
+        </head>
         <body className={inter.className}>
           <TierProvider tier={tier}>
             {children}
